@@ -26,6 +26,13 @@ class FcitxComm:
     else:
       return im
 
+  def current_and_rime(self):
+    im = self.fcitx.CurrentInputMethod()
+    if im == 'rime':
+      return 'rime:' + self._get_rime().GetCurrentSchema()
+    else:
+      return im
+
   def _get_rime(self):
     if self._rime is None:
       obj = self.bus.get_object('org.fcitx.Fcitx5', '/rime')
@@ -90,3 +97,7 @@ def fcitx2zh():
 @may_reconnect
 def fcitx_current_im():
   return Fcitx.current()
+
+@may_reconnect
+def fcitx_current_im_and_rime():
+  return Fcitx.current_and_rime()

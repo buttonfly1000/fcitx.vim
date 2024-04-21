@@ -51,6 +51,9 @@ elseif has('python3')
       function FcitxCurrentIM()
         return py3eval('fcitx_current_im()')
       endfunction
+      function FcitxCurrentIMwithRime()
+        return py3eval('fcitx_current_im_and_rime()')
+      endfunction
 
       let g:loaded_fcitx = 1
     endif
