@@ -11,6 +11,10 @@ endif
 let s:keepcpo = &cpo
 set cpo&vim
 
+if ! exists("g:fcitx5_context_mode")
+  let g:fcitx5_context_mode = 0
+endif
+
 function s:setup_cmd()
   function Fcitx2en()
     let inputstatus = trim(system(g:fcitx5_remote))
@@ -22,7 +26,9 @@ function s:setup_cmd()
   function Fcitx2zh()
     try
       if b:inputtoggle == 1
-        call system(g:fcitx5_remote . ' -o')
+        if g:fcitx5_context_mode == 0 || match(getline("."), "[^\\x00-\\x7F]") >= 0
+          call system(g:fcitx5_remote . ' -o')
+        endif
         let b:inputtoggle = 0
       endif
     catch /inputtoggle/
@@ -58,6 +64,7 @@ elseif has('python3')
       let g:loaded_fcitx = 1
     endif
   catch
+    echoerr
     if executable('fcitx5-remote')
       let g:fcitx5_remote = 'fcitx5-remote'
       call s:setup_cmd()

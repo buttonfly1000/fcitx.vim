@@ -89,7 +89,8 @@ def fcitx2en():
 def fcitx2zh():
   if vim.eval('exists("b:inputtoggle")') == '1':
     if vim.eval('b:inputtoggle') == '1':
-      Fcitx.activate()
+      if int(vim.eval('g:fcitx5_context_mode')) == 0 or int(vim.eval(r'match(getline("."), "[^\\x00-\\x7F]")')) >= 0:
+        Fcitx.activate()
       vim.command('let b:inputtoggle = 0')
   else:
     vim.command('let b:inputtoggle = 0')
